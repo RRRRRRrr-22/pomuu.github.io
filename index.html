@@ -1,0 +1,298 @@
+# pomuu.github.io
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2024 天皇賞（秋） ドウデュース 衝撃の末脚</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+        
+        body {
+            font-family: 'DotGothic16', sans-serif;
+            background-color: #0f172a;
+            color: white;
+            overflow: hidden;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            height: 450px;
+            background: linear-gradient(to bottom, #93c5fd 0%, #93c5fd 50%, #166534 50%, #15803d 100%);
+            border: 6px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .track-fence {
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background: white;
+            top: 50%;
+            z-index: 5;
+        }
+
+        .horse {
+            position: absolute;
+            width: 70px;
+            height: 45px;
+            font-size: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
+        }
+
+        .horse-name {
+            position: absolute;
+            top: -24px;
+            font-size: 11px;
+            white-space: nowrap;
+            background: rgba(0,0,0,0.75);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .message-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.9);
+            border: 2px solid #fbbf24;
+            padding: 12px 24px;
+            width: 85%;
+            text-align: center;
+            z-index: 100;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+        }
+
+        .富士山 {
+            position: absolute;
+            top: 40px;
+            left: 50px;
+            font-size: 60px;
+            opacity: 0.8;
+        }
+
+        #overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            backdrop-filter: blur(4px);
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            color: #000;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 1.25rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .start-button:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 10px 20px rgba(217, 119, 6, 0.4);
+        }
+
+        @keyframes gallop-fast {
+            0%, 100% { transform: translateY(0) rotate(-3deg) scaleX(1); }
+            50% { transform: translateY(-8px) rotate(3deg) scaleX(1.05); }
+        }
+
+        .running {
+            animation: gallop-fast 0.3s infinite;
+        }
+
+        .speed-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.6));
+            border-radius: 2px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mb-4 text-center">
+        <h1 class="text-3xl font-black text-yellow-400 tracking-tighter">2024 TENNO SHO (AUTUMN)</h1>
+        <p class="text-gray-400 text-sm">東京競馬場 芝2000m</p>
+    </div>
+
+    <div id="game-container">
+        <div class="富士山">🗻</div>
+        <div class="track-fence"></div>
+
+        <!-- 競走馬 -->
+        <div id="holistic" class="horse">
+            <div class="horse-name">ホウオウビスケッツ</div>
+            🏇
+        </div>
+        <div id="tastyiera" class="horse">
+            <div class="horse-name">タスティエーラ</div>
+            🏇
+        </div>
+        <div id="bellagio" class="horse">
+            <div class="horse-name">ベラジオオペラ</div>
+            🏇
+        </div>
+        <div id="dodeuce" class="horse" style="filter: hue-rotate(240deg) brightness(1.2);">
+            <div class="horse-name" style="border-color: #fbbf24; color: #fbbf24;">ドウデュース (武豊)</div>
+            🐎
+        </div>
+
+        <div id="message" class="message-panel text-lg">
+            伝統の秋の盾。府中の2000m。
+        </div>
+
+        <div id="overlay">
+            <div class="text-center p-8">
+                <h2 class="text-4xl font-bold text-white mb-2">第170回 天皇賞（秋）</h2>
+                <p class="text-yellow-400 mb-8">「上がり32.5秒」 異次元の瞬発力</p>
+                <div id="start-btn" class="start-button">ゲートイン</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-8 grid grid-cols-2 gap-4 text-xs text-gray-500 uppercase tracking-widest">
+        <div>DISTANCE: 2000M</div>
+        <div class="text-right">TRACK: FIRM (良)</div>
+    </div>
+
+    <script>
+        const startBtn = document.getElementById('start-btn');
+        const overlay = document.getElementById('overlay');
+        const message = document.getElementById('message');
+        const container = document.getElementById('game-container');
+        
+        const horses = {
+            holistic: { el: document.getElementById('holistic'), x: 150, y: 220, speed: 2.2, label: "ホウオウビスケッツ" },
+            tastyiera: { el: document.getElementById('tastyiera'), x: 100, y: 270, speed: 2.0, label: "タスティエーラ" },
+            bellagio: { el: document.getElementById('bellagio'), x: 80, y: 320, speed: 1.9, label: "ベラジオオペラ" },
+            dodeuce: { el: document.getElementById('dodeuce'), x: 10, y: 370, speed: 1.4, label: "ドウデュース" }
+        };
+
+        let progress = 0;
+        let animationFrame;
+
+        function createSpeedLine() {
+            if (Math.random() > 0.3) return;
+            const line = document.createElement('div');
+            line.className = 'speed-line';
+            const width = 50 + Math.random() * 100;
+            line.style.width = width + 'px';
+            line.style.left = '900px';
+            line.style.top = (200 + Math.random() * 200) + 'px';
+            container.appendChild(line);
+            
+            let pos = 900;
+            const moveLine = () => {
+                pos -= 20;
+                line.style.left = pos + 'px';
+                if (pos > -width) {
+                    requestAnimationFrame(moveLine);
+                } else {
+                    line.remove();
+                }
+            };
+            moveLine();
+        }
+
+        function updatePositions() {
+            Object.keys(horses).forEach(key => {
+                const h = horses[key];
+                h.el.style.left = h.x + 'px';
+                h.el.style.top = h.y + 'px';
+                h.el.classList.add('running');
+            });
+        }
+
+        function raceLogic() {
+            progress++;
+
+            if (progress < 120) {
+                // スタート直後
+                message.innerText = "ホウオウビスケッツが逃げる展開！ドウデュースは後方のまま！";
+                horses.holistic.x += 1.5;
+                horses.tastyiera.x += 1.3;
+                horses.bellagio.x += 1.2;
+                horses.dodeuce.x += 0.8;
+            } 
+            else if (progress < 300) {
+                // 中盤
+                message.innerText = "1000m通過は59秒9。縦長の展開で大欅を通過！";
+                horses.holistic.x += 0.3;
+                horses.tastyiera.x += 0.4;
+                horses.dodeuce.x += 0.2;
+            } 
+            else if (progress < 500) {
+                // 直線入り口
+                message.innerText = "最後の直線！ドウデュースはまだ後ろ！届くのか！？";
+                horses.holistic.x -= 0.2;
+                horses.tastyiera.x += 0.5;
+                horses.dodeuce.x += 1.2;
+                horses.dodeuce.y = 350; // 少し外へ
+                createSpeedLine();
+            } 
+            else if (progress < 700) {
+                // 究極の末脚発動
+                message.innerHTML = "<span class='text-yellow-400 font-bold'>ドウデュースが来た！！外から一気にドウデュース！！</span>";
+                horses.holistic.x -= 1.0;
+                horses.tastyiera.x += 0.4;
+                horses.dodeuce.x += 4.5; // 圧倒的な加速 (32.5秒の脚)
+                createSpeedLine();
+                createSpeedLine();
+            } 
+            else if (progress < 850) {
+                // ゴール
+                message.innerText = "これがドウデュースだ！これが武豊だ！完璧な差し切り！";
+                horses.dodeuce.x += 1.2;
+                if (progress === 840) {
+                    message.innerHTML = "<span class='text-yellow-300 text-2xl'>1着 ドウデュース（32.5秒の衝撃）</span>";
+                }
+            } 
+            else {
+                cancelAnimationFrame(animationFrame);
+                return;
+            }
+
+            updatePositions();
+            animationFrame = requestAnimationFrame(raceLogic);
+        }
+
+        startBtn.addEventListener('click', () => {
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.style.display = 'none', 500);
+            raceLogic();
+        });
+
+        // 初期描画
+        updatePositions();
+    </script>
+</body>
+</html>
